@@ -81,7 +81,7 @@ describe Extlib::Inflection do
   end
 
   describe "#demodulize" do
-    it 'should demodulize a module name' do
+    it 'demodulizes module name: DataMapper::Inflector => Inflector' do
       Extlib::Inflection.demodulize('DataMapper::Inflector').should == 'Inflector'
       Extlib::Inflection.demodulize('A::B::C::D::E').should == 'E'
     end
