@@ -38,6 +38,10 @@ describe Extlib::Inflection do
     it 'camelizes data_mapper as DataMapper' do
       Extlib::Inflection.camelize('data_mapper').should == 'DataMapper'
     end
+    
+    it "makes constant string: camelizes data_mapper/resource as DataMapper::Resource" do
+      Extlib::Inflection.camelize('data_mapper/resource').should == 'DataMapper::Resource'
+    end
   end
 
   describe "#underscore" do
