@@ -24,8 +24,10 @@ describe Extlib::Inflection do
     end    
   end
 
-  it 'should classify an underscored name' do
-    Extlib::Inflection.classify('data_mapper').should == 'DataMapper'
+  describe "#classify" do
+    it 'should classify an underscored name' do
+      Extlib::Inflection.classify('data_mapper').should == 'DataMapper'
+    end
   end
 
   it 'should camelize an underscored name' do
