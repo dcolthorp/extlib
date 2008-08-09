@@ -71,11 +71,11 @@ describe Extlib::Inflection do
   end
 
   describe "#humanize" do
-    it 'humanizes employee_salary as Employee salary' do
+    it 'replaces _ with space: humanizes employee_salary as Employee salary' do
       Extlib::Inflection.humanize('employee_salary').should == 'Employee salary'      
     end
     
-    it "humanizes author_id as Author" do
+    it "strips _id endings: humanizes author_id as Author" do
       Extlib::Inflection.humanize('author_id').should == 'Author'
     end
   end
