@@ -39,8 +39,16 @@ describe Extlib::Inflection do
       Extlib::Inflection.camelize('data_mapper').should == 'DataMapper'
     end
     
-    it "makes constant string: camelizes data_mapper/resource as DataMapper::Resource" do
+    it "camelizes merb as Merb" do
+      Extlib::Inflection.camelize('merb').should == 'Merb'
+    end
+    
+    it "camelizes data_mapper/resource as DataMapper::Resource" do
       Extlib::Inflection.camelize('data_mapper/resource').should == 'DataMapper::Resource'
+    end
+    
+    it "camelizes data_mapper/associations/one_to_many as DataMapper::Associations::OneToMany" do
+      Extlib::Inflection.camelize('data_mapper/associations/one_to_many').should == 'DataMapper::Associations::OneToMany'
     end
   end
 
