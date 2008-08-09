@@ -105,9 +105,12 @@ describe Extlib::Inflection do
   end
 
   describe "#foreign_key" do
-    it 'should create a fk name from a class name' do
-      Extlib::Inflection.foreign_key('Message').should == 'message_id'
+    it 'adds _id to downcased string: Message => message_id' do
+      Extlib::Inflection.foreign_key('Message').should == 'message_id'      
+    end
+    
+    it "demodulizes string first: Admin::Post => post_id" do
       Extlib::Inflection.foreign_key('Admin::Post').should == 'post_id'
-    end    
+    end
   end
 end
