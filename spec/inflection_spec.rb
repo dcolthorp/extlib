@@ -2,9 +2,11 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'spec_helper'))
 
 describe Extlib::Inflection do
 
-  it 'should pluralize a word' do
-    'car'.plural.should == 'cars'
-    Extlib::Inflection.pluralize('car').should == 'cars'
+  describe "#pluralize" do
+    it 'should pluralize a word' do
+      'car'.plural.should == 'cars'
+      Extlib::Inflection.pluralize('car').should == 'cars'
+    end    
   end
 
   it 'should singularize a word' do
@@ -39,6 +41,7 @@ describe Extlib::Inflection do
 
   it 'should demodulize a module name' do
     Extlib::Inflection.demodulize('DataMapper::Inflector').should == 'Inflector'
+    Extlib::Inflection.demodulize('A::B::C::D::E').should == 'E'
   end
 
   it 'should tableize a name (underscore with last word plural)' do
