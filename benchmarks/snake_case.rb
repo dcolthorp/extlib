@@ -18,6 +18,17 @@ class String
       return $+.downcase
   end
   
+  ##
+  # @return <String>
+  #   The path that is associated with the constantized string, assuming a
+  #   conventional structure.
+  #
+  # @example
+  #   "FooBar::Baz".to_const_path # => "foo_bar/baz"
+  def to_const_path
+    snake_case.gsub(/::/, "/")
+  end  
+  
   # The reverse of +camelize+. Makes an underscored form from the expression in the string.
   #
   # Changes '::' to '/' to convert namespaces to paths.
@@ -39,7 +50,12 @@ end # class String
 RBench.run(10_000) do
   report "String#underscore" do
     "CamelCaseString".underscore
-    "SomeABitLongerCamelCaseString".underscore
+    "SomeABitLongerCamel::CaseString".underscore
+  end
+  
+  report "String#to_const_path" do
+    "CamelCaseString".to_const_path
+    "SomeABitLongerCamel::CaseString".to_const_path
   end
 
   report "String#snake_case" do
