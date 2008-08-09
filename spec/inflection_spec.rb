@@ -42,9 +42,11 @@ describe Extlib::Inflection do
     end
   end
 
-  it 'should humanize names' do
-    Extlib::Inflection.humanize('employee_salary').should == 'Employee salary'
-    Extlib::Inflection.humanize('author_id').should == 'Author'
+  describe "#humanize" do
+    it 'should humanize names' do
+      Extlib::Inflection.humanize('employee_salary').should == 'Employee salary'
+      Extlib::Inflection.humanize('author_id').should == 'Author'
+    end
   end
 
   it 'should demodulize a module name' do
