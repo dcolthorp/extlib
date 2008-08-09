@@ -10,7 +10,7 @@ describe Extlib::Inflection do
   end
 
   describe "#singularize" do
-    it 'should singularize a word' do
+    it 'should singularize cars as car' do
       "cars".singular.should == "car"
       Extlib::Inflection.singularize('cars').should == 'car'
     end
