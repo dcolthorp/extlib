@@ -43,8 +43,11 @@ describe Extlib::Inflection do
   end
 
   describe "#humanize" do
-    it 'should humanize names' do
-      Extlib::Inflection.humanize('employee_salary').should == 'Employee salary'
+    it 'humanizes employee_salary as Employee salary' do
+      Extlib::Inflection.humanize('employee_salary').should == 'Employee salary'      
+    end
+    
+    it "humanizes author_id as Author" do
       Extlib::Inflection.humanize('author_id').should == 'Author'
     end
   end
