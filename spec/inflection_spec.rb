@@ -9,17 +9,19 @@ describe Extlib::Inflection do
     end    
   end
 
-  it 'should singularize a word' do
-    "cars".singular.should == "car"
-    Extlib::Inflection.singularize('cars').should == 'car'
-  end
+  describe "#singularize" do
+    it 'should singularize a word' do
+      "cars".singular.should == "car"
+      Extlib::Inflection.singularize('cars').should == 'car'
+    end
 
-  it "should not singularize 'postgres'" do
-    Extlib::Inflection.singularize('postgres').should == 'postgres'
-  end
+    it "should not singularize 'postgres'" do
+      Extlib::Inflection.singularize('postgres').should == 'postgres'
+    end
 
-  it "should not singularize 'status'" do
-    Extlib::Inflection.singularize('status').should == 'status'
+    it "should not singularize 'status'" do
+      Extlib::Inflection.singularize('status').should == 'status'
+    end    
   end
 
   it 'should classify an underscored name' do
