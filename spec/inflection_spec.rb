@@ -60,6 +60,14 @@ describe Extlib::Inflection do
     it 'underscores Merb as merb' do
       Extlib::Inflection.underscore('Merb').should == 'merb'
     end
+    
+    it 'underscores DataMapper::Resource as data_mapper/resource' do
+      Extlib::Inflection.underscore('DataMapper::Resource').should == 'data_mapper/resource'
+    end
+    
+    it 'underscores Merb::BootLoader::Rackup as merb/boot_loader/rackup' do
+      Extlib::Inflection.underscore('Merb::BootLoader::Rackup').should == 'merb/boot_loader/rackup'
+    end
   end
 
   describe "#humanize" do
