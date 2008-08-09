@@ -25,7 +25,7 @@ describe Extlib::Inflection do
   end
 
   describe "#classify" do
-    it 'should classify an underscored name' do
+    it 'classifies data_mapper as DataMaper' do
       Extlib::Inflection.classify('data_mapper').should == 'DataMapper'
     end
   end
