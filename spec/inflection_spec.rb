@@ -56,16 +56,19 @@ describe Extlib::Inflection do
     end
   end
 
-  it 'should tableize a name (underscore with last word plural)' do
-    Extlib::Inflection.tableize('fancy_category').should == 'fancy_categories'
-    Extlib::Inflection.tableize('FancyCategory').should == 'fancy_categories'
+  describe "#tableize" do
+    it 'should tableize a name (underscore with last word plural)' do
+      Extlib::Inflection.tableize('fancy_category').should == 'fancy_categories'
+      Extlib::Inflection.tableize('FancyCategory').should == 'fancy_categories'
     
-    Extlib::Inflection.tableize('Fancy::Category').should == 'fancy_categories'
+      Extlib::Inflection.tableize('Fancy::Category').should == 'fancy_categories'
+    end    
   end
 
-  it 'should create a fk name from a class name' do
-    Extlib::Inflection.foreign_key('Message').should == 'message_id'
-    Extlib::Inflection.foreign_key('Admin::Post').should == 'post_id'
+  describe "#foreign_key" do
+    it 'should create a fk name from a class name' do
+      Extlib::Inflection.foreign_key('Message').should == 'message_id'
+      Extlib::Inflection.foreign_key('Admin::Post').should == 'post_id'
+    end    
   end
-
 end
