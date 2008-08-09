@@ -40,6 +40,10 @@ describe Extlib::Inflection do
     it 'underscores DataMapper as data_mapper' do
       Extlib::Inflection.underscore('DataMapper').should == 'data_mapper'
     end
+    
+    it 'underscores Merb as merb' do
+      Extlib::Inflection.underscore('Merb').should == 'merb'
+    end
   end
 
   describe "#humanize" do
