@@ -36,8 +36,10 @@ describe Extlib::Inflection do
     end
   end
 
-  it 'should underscore a camelized name' do
-    Extlib::Inflection.underscore('DataMapper').should == 'data_mapper'
+  describe "#underscore" do
+    it 'should underscore a camelized name' do
+      Extlib::Inflection.underscore('DataMapper').should == 'data_mapper'
+    end
   end
 
   it 'should humanize names' do
