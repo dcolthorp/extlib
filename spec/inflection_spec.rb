@@ -91,10 +91,15 @@ describe Extlib::Inflection do
   end
 
   describe "#tableize" do
-    it 'should tableize a name (underscore with last word plural)' do
+    it 'pluralizes last word in snake_case strings: fancy_category => fancy_categories' do
       Extlib::Inflection.tableize('fancy_category').should == 'fancy_categories'
-      Extlib::Inflection.tableize('FancyCategory').should == 'fancy_categories'
+    end
     
+    it 'underscores CamelCase strings before pluralization: FancyCategory => fancy_categories' do
+      Extlib::Inflection.tableize('FancyCategory').should == 'fancy_categories'
+    end
+    
+    it 'replaces :: with underscores: Fancy::Category => fancy_categories' do
       Extlib::Inflection.tableize('Fancy::Category').should == 'fancy_categories'
     end    
   end
