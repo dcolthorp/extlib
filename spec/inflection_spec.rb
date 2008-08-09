@@ -30,8 +30,10 @@ describe Extlib::Inflection do
     end
   end
 
-  it 'should camelize an underscored name' do
-    Extlib::Inflection.camelize('data_mapper').should == 'DataMapper'
+  describe "#camelize" do
+    it 'should camelize an underscored name' do
+      Extlib::Inflection.camelize('data_mapper').should == 'DataMapper'
+    end
   end
 
   it 'should underscore a camelized name' do
