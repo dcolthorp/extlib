@@ -28,6 +28,10 @@ describe Extlib::Inflection do
     it 'classifies data_mapper as DataMaper' do
       Extlib::Inflection.classify('data_mapper').should == 'DataMapper'
     end
+    
+    it "singularizes string first: classifies data_mappers as egg_and_hams as EggAndHam" do
+      Extlib::Inflection.classify('egg_and_hams').should == 'EggAndHam'
+    end
   end
 
   describe "#camelize" do
