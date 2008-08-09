@@ -77,7 +77,7 @@ module Extlib
       #   "egg_and_ham".tableize #=> "egg_and_hams"
       #   "fancyCategory".tableize #=> "fancy_categories"
       def tableize(class_name)
-        pluralize(underscore(class_name))
+        pluralize(class_name.to_const_path.gsub(/\//, '_'))
       end
 
       # Creates a foreign key name from a class name.

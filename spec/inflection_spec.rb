@@ -44,6 +44,8 @@ describe Extlib::Inflection do
   it 'should tableize a name (underscore with last word plural)' do
     Extlib::Inflection.tableize('fancy_category').should == 'fancy_categories'
     Extlib::Inflection.tableize('FancyCategory').should == 'fancy_categories'
+    
+    Extlib::Inflection.tableize('Fancy::Category').should == 'fancy_categories'
   end
 
   it 'should create a fk name from a class name' do
