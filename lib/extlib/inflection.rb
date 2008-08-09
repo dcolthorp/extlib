@@ -47,11 +47,7 @@ module Extlib
       #   "ActiveRecord::Errors".underscore #=> active_record/errors
       #
       def underscore(camel_cased_word)
-        camel_cased_word.to_s.gsub(/::/, '/').
-          gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-          gsub(/([a-z\d])([A-Z])/,'\1_\2').
-          tr("-", "_").
-          downcase
+        camel_cased_word.to_const_path
       end
 
       # Capitalizes the first word and turns underscores into spaces and strips _id.
