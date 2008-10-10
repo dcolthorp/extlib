@@ -1,36 +1,36 @@
 require "time" # httpdate
-# ==== Public Merb Logger API
+# ==== Public Extlib Logger API
 #
 # To replace an existing logger with a new one:
-#  Merb::Logger.set_log(log{String, IO},level{Symbol, String})
+#  Extlib::Logger.set_log(log{String, IO},level{Symbol, String})
 #
 # Available logging levels are
-#   Merb::Logger::{ Fatal, Error, Warn, Info, Debug }
+#   Extlib::Logger::{ Fatal, Error, Warn, Info, Debug }
 #
 # Logging via:
-#   Merb.logger.fatal(message<String>,&block)
-#   Merb.logger.error(message<String>,&block)
-#   Merb.logger.warn(message<String>,&block)
-#   Merb.logger.info(message<String>,&block)
-#   Merb.logger.debug(message<String>,&block)
+#   Extlib.logger.fatal(message<String>,&block)
+#   Extlib.logger.error(message<String>,&block)
+#   Extlib.logger.warn(message<String>,&block)
+#   Extlib.logger.info(message<String>,&block)
+#   Extlib.logger.debug(message<String>,&block)
 #
 # Logging with autoflush:
-#   Merb.logger.fatal!(message<String>,&block)
-#   Merb.logger.error!(message<String>,&block)
-#   Merb.logger.warn!(message<String>,&block)
-#   Merb.logger.info!(message<String>,&block)
-#   Merb.logger.debug!(message<String>,&block)
+#   Extlib.logger.fatal!(message<String>,&block)
+#   Extlib.logger.error!(message<String>,&block)
+#   Extlib.logger.warn!(message<String>,&block)
+#   Extlib.logger.info!(message<String>,&block)
+#   Extlib.logger.debug!(message<String>,&block)
 #
 # Flush the buffer to 
-#   Merb.logger.flush
+#   Extlib.logger.flush
 #
 # Remove the current log object
-#   Merb.logger.close
+#   Extlib.logger.close
 # 
-# ==== Private Merb Logger API
+# ==== Private Extlib Logger API
 # 
 # To initialize the logger you create a new object, proxies to set_log.
-#   Merb::Logger.new(log{String, IO},level{Symbol, String})
+#   Extlib::Logger.new(log{String, IO},level{Symbol, String})
 module Extlib
 
   class << self
@@ -38,13 +38,13 @@ module Extlib
   end
 
   class Logger
-
-    attr_accessor :level
+    @@mutex = {}
+    
+    attr_reader   :level
     attr_accessor :delimiter
     attr_accessor :auto_flush
     attr_reader   :buffer
     attr_reader   :log
-    attr_reader   :init_args
 
     # ==== Notes
     # Ruby (standard) logger levels:
@@ -53,14 +53,13 @@ module Extlib
     # :warn:: A warning
     # :info:: generic (useful) information about system operation
     # :debug:: low-level information for developers
-    Levels = 
-    {
+    Levels = Mash.new(
       :fatal => 7, 
       :error => 6, 
       :warn  => 4,
       :info  => 3,
       :debug => 0
-    }
+    )
 
     private
 
@@ -91,7 +90,6 @@ module Extlib
     # ==== Parameters
     # *args:: Arguments to create the log from. See set_logs for specifics.
     def initialize(*args)
-      @init_args = args
       set_log(*args)
     end
 
@@ -108,27 +106,43 @@ module Extlib
     #   Whether the log should automatically flush after new messages are
     #   added. Defaults to false.
     def set_log(log, log_level = nil, delimiter = " ~ ", auto_flush = false)
-      if log_level && Levels[log_level.to_sym]
-        @level = Levels[log_level.to_sym]
-      elsif Merb.environment == "production"
-        @level = Levels[:warn]
-      else
-        @level = Levels[:debug]
-      end
       @buffer     = []
       @delimiter  = delimiter
       @auto_flush = auto_flush
 
-      initialize_log(log)
+      self.level = log_level
 
-      Merb.logger = self
+      initialize_log(log)
+      
+      @mutex = (@@mutex[@log] ||= Mutex.new)
+    end
+    
+    # Sets the level to the specified value.
+    #
+    # ==== Parameters
+    # log_level<(nil,Symbol,String,Integer)>:: 
+    #   The new log level. If nil, :debug is used by default. If
+    #   a Symbol or String, the corresponding numeric value is used.
+    #   If an Integer, that value is used.
+    #
+    # ==== Returns
+    # Integer:: The value of the log level assigned
+    def level=(log_level)
+      if log_level
+        @level = Levels[log_level] || log_level
+      else
+        @level = Levels[:debug]
+      end
     end
 
     # Flush the entire buffer to the log object.
     def flush
       return unless @buffer.size > 0
-      @log.write(@buffer.slice!(0..-1).to_s)
+      @mutex.synchronize do
+        @log.write(@buffer.slice!(0..-1).to_s)
+      end
     end
+    
 
     # Close and remove the current log object.
     def close
@@ -157,7 +171,7 @@ module Extlib
     end
     alias :push :<<
 
-    # Generate the logging methods for Merb.logger for each log level.
+    # Generate the logging methods for Extlib.logger for each log level.
     Levels.each_pair do |name, number|
       class_eval <<-LEVELMETHODS, __FILE__, __LINE__
 
